@@ -21,12 +21,32 @@ class UrlStorage
         $this->pdo->exec(Queries::CREATE_TABLE);
     }
 
-    public function genShortUrl($longUrl)
+    public function addLongUrl($longUrl, $shortUrl = "")
     {
-        $stmt = $this->pdo->prepare(Queries::INSERT_URL);
-        $stmt->execute([$longUrl]);
-        $newId = $this->pdo->lastInsertId("id");
-        return ConvertIntSymb::intToSymb($newId);
+        try {
+            $this->pdo->beginTransaction();
+
+            if (!shortUrl) {
+                $stmt = $this->pdo->prepare(Queries::INSERT_URL);
+                $stmt->bindValue(":long_url", $longUrl);
+                $stmt->bindValue(":short_url", "null", \PDO::PARAM_NULL);
+                $stmt->execute();
+                $newId = $this->pdo->lastInsertId("id");
+                $stmt = $this->pdo->prepare(Queries::UPDATE_SHORT_URL);
+                $stmt->bindValue(":id", $newId, \PDO::PARAM_INT);
+                $shortUrl = ConvertIntSymb::intToSymb($newId);
+                $stmt->bindValue(":short_url", $shortUrl);
+                $stmt->execute();
+            } else {
+                
+            }
+
+            $this->pdo->commit();
+        } catch (\Exception $e) {
+            $shortUrl = null;
+            $this->pdo->rollBack();
+        }
+        return $shortUrl;
     }
 
     public function getLongUrl($shortUrl)

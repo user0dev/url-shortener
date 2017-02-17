@@ -13,10 +13,18 @@ abstract class Validator
 {
     static public function shortUrlValidation($shortUrl)
     {
+
         return true;
     }
-    static public function longUrlSanitize($longUrl)
+
+    static public function longUrlValidation($longUrl)
     {
-        return $longUrl;
+        return filter_var($longUrl, FILTER_VALIDATE_URL) != "";
+
+    }
+
+    static public function stringSanitize($string)
+    {
+        return $string;
     }
 }

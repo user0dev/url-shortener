@@ -27,7 +27,7 @@ class TwigTemplateEngine implements ITemplateEngine
         if (isset($config["debug"]) && is_bool($config["debug"])) {
             $options["debug"] = $config["debug"];
         }
-        var_dump($options);
+
         $this->twig = new \Twig_Environment($this->loader, $options);
     }
 

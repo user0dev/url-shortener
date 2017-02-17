@@ -8,10 +8,12 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
+$config = include __DIR__ . "/../config.php";
+
 use \User0dev\UrlShortener\Storage\UrlStorage;
 use \User0dev\UrlShortener\Templating\TwigTemplateEngine;
 
-$config = include __DIR__ . "/../config.php";
+
 
 $store = new UrlStorage($config["db"]);
 

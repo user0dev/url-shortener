@@ -16,7 +16,7 @@ return array(
     "twig" => [
         "cacheDir" => __DIR__ . "/cache",
         "templatesDir" => __DIR__ . "/src/Templates",
-        "debug" => "true",
+        "debug" => true,
     ],
 
 );

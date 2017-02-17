@@ -19,7 +19,7 @@ class TwigTemplateEngine implements ITemplateEngine
         if (!isset($config["templatesDir"])) {
             throw new \InvalidArgumentException("Missing parameter 'templateDir'");
         }
-        $this->loader = new \Twig_Loader_Filesystem($config["templatesDir"];
+        $this->loader = new \Twig_Loader_Filesystem($config["templatesDir"]);
         if (!isset($config["cacheDir"])) {
             throw new \InvalidArgumentException("Missing parameter 'cacheDir");
         }
@@ -27,12 +27,13 @@ class TwigTemplateEngine implements ITemplateEngine
         if (isset($config["debug"]) && is_bool($config["debug"])) {
             $options["debug"] = $config["debug"];
         }
+        var_dump($options);
         $this->twig = new \Twig_Environment($this->loader, $options);
     }
 
     public function render($templateName, array $data = [])
     {
-        $this->twig->render($templateName, $data);
+        return $this->twig->render($templateName, $data);
     }
 
 

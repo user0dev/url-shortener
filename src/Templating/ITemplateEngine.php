@@ -9,8 +9,8 @@
 namespace User0dev\UrlShortener\Templating;
 
 
-interface ITemplater
+interface ITemplateEngine
 {
-    public function Render($templateName, array $data = []);
+    public function render($templateName, array $data = []);
 
 }

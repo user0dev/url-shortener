@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: user
  * Date: 17.02.17
- * Time: 3:20
+ * Time: 6:34
  */
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -14,19 +14,11 @@ $config = include __DIR__ . "/../config.php";
 
 $store = new UrlStorage($config["db"]);
 
+$longUrl = $_POST["long-url"];
 
+$firstPartUrl = $_SERVER["HTTP_HOST"] . "/?u=";
 
-if (isset($_GET["u"])) {
-    $shortUrl = $_GET["u"];
-    $longUrl = $store->getLongUrl($shortUrl);
-    if ($longUrl) {
-        header("Location: $longUrl");
-        exit();
-    } else {
-        header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
-        exit();
-    }
-}
+$shortUrl =  $firstPartUrl . $store->genShortUrl($longUrl);
 
 ?>
 
@@ -40,9 +32,7 @@ if (isset($_GET["u"])) {
     <title>Document</title>
 </head>
 <body>
-    <form action="shorturl.php" method="post">
-        <input type="url" name="long-url" value="https://www.youtube.com/watch?v=26AuV9bwHCw"><br>
-        <input type="submit">
-    </form>
+    <div>Исходный URL: <i><?= $longUrl ?></i></div>
+    <div><label>Сокращенный URL: <input type="text" readonly value="<?= $shortUrl ?>"></label></div>
 </body>
 </html>

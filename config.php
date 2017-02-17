@@ -6,9 +6,16 @@
  * Time: 4:12
  */
 return array(
-    dbType => "mysql",
-    dbHost => "localhost",
-    dbName => "url_shorter",
-    cacheDir => __DIR__ . "/cache",
+    "db" => [
+        "type" => "mysql",
+        "host" => "localhost",
+        "dbname" => "url_shortener",
+        "user" => "root",
+        "password" => "1234512345",
+    ],
+    "twig" => [
+        "cacheDir" => __DIR__ . "/cache",
+        "templatesDir" => __DIR__ . "/src/Templates",
+    ],
 
 );

@@ -6,24 +6,42 @@
  * Time: 3:42
  */
 
-namespace User0dev\Storage\UrlShorting;
+namespace User0dev\UrlShortener\Storage;
 
 
 class UrlStorage
 {
     protected $pdo;
 
-    public function __construct()
+    public function __construct(array $config)
     {
-
+        $dsn = sprintf("%s:dbname=%s;host=%s", $config["type"], $config["dbname"], $config["host"]);
+        $options = [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION, \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC];
+        $this->pdo = new \PDO($dsn, $config["user"], $config["password"], $options);
+        $this->pdo->exec(Queries::CREATE_TABLE);
     }
 
-    public function genShortUrl($selfName)
+    public function genShortUrl($longUrl)
     {
-
+        $stmt = $this->pdo->prepare(Queries::INSERT_URL);
+        $stmt->execute([$longUrl]);
+        $newId = $this->pdo->lastInsertId("id");
+        return ConvertIntSymb::intToSymb($newId);
     }
+
     public function getLongUrl($shortUrl)
     {
+        $id = ConvertIntSymb::SymbToInt($shortUrl);
+        $stmt = $this->pdo->prepare(Queries::GET_LONG_URL);
 
+        $stmt->bindValue(1, $id, \PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        var_dump($result);
+        if ($result) {
+            return $result[0]["long_url"];
+        } else {
+            return null;
+        }
     }
 }

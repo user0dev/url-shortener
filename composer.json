@@ -1,5 +1,5 @@
 {
-    "name": "user0dev/url-shorting",
+    "name": "user0dev/url-shortener",
     "description": "It is a easy url shorting service",
     "type": "project",
     "license": "WTFPL",
@@ -14,7 +14,7 @@
     },
     "autoload": {
         "psr-4": {
-            "User0dev\\UrlShorting\\": "./src"
+            "User0dev\\UrlShortener\\": "./src"
         }
     }
 }

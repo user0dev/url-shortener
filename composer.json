@@ -1,0 +1,15 @@
+{
+    "name": "user0dev/url-shorting",
+    "description": "It is a easy url shorting service",
+    "type": "project",
+    "license": "WTFPL",
+    "authors": [
+        {
+            "name": "user0dev",
+            "email": "user0dev@yandex.com"
+        }
+    ],
+    "require": {
+        "twig/twig": "~1.0"
+    }
+}

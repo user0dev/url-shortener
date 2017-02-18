@@ -11,8 +11,12 @@ function getShortUrl() {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            var result = JSON.parse(this.responseText);
-            document.getElementById("shortUrl").value = result.shortUrl;
+            var shortUrl = JSON.parse(this.responseText).shortUrl;
+            if (shortUrl != "") {
+                document.getElementById("shortUrlBlock").style.display = "block";
+                document.getElementById("shortUrl").value = shortUrl;
+            }
+
         }
     };
     xmlhttp.open("GET", "ajax.php?long-url=" + longUrl, true);

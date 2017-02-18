@@ -9,6 +9,8 @@
 namespace User0dev\UrlShortener\Storage;
 
 
+use User0dev\UrlShortener\Utils\ConvertIntSymb;
+
 class UrlStorage
 {
     protected $pdo;
@@ -19,13 +21,16 @@ class UrlStorage
         $this->pdo = new \PDO($dsn, $config["user"], $config["password"], $options);
         $this->pdo->exec(Queries::CREATE_TABLE);
     }
-    public function genShortUrl($longUrl)
+
+    public function addLongUrl($longUrl)
     {
         $stmt = $this->pdo->prepare(Queries::INSERT_URL);
-        $stmt->execute([$longUrl]);
+        $stmt->bindValue(":long_url", $longUrl);
+        $stmt->execute();
         $newId = $this->pdo->lastInsertId("id");
         return ConvertIntSymb::intToSymb($newId);
     }
+
     public function getLongUrl($shortUrl)
     {
         $id = ConvertIntSymb::SymbToInt($shortUrl);

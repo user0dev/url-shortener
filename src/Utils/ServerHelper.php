@@ -9,7 +9,7 @@
 namespace User0dev\UrlShortener\Utils;
 
 
-abstract class SendHeader
+abstract class ServerHelper
 {
     static public function location($location)
     {
@@ -22,5 +22,8 @@ abstract class SendHeader
             $text = "Page not found";
         }
         exit($text);
+    }
+    static public function symbNumberToURL($symbNumber) {
+        return $_SERVER["HTTP_HOST"] . "/$symbNumber";
     }
 }

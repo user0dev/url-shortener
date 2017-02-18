@@ -2,9 +2,22 @@
 
 {% block content %}
 
-    <form action="index.php" method="post">
-        <input type="url" name="long-url" value="https://www.youtube.com/watch?v=26AuV9bwHCw"><br>
-        <input type="submit">
-    </form>
+    <form action="ajax.php" method="get" onsubmit="getShortUrl(); return false">
+        <div><label for="longUrl">Введите ссылку которую хотите сократить</label></div>
+        <div>
+            <input type="url" name="long-url" id="longUrl" value="https://www.youtube.com/watch?v=26AuV9bwHCw">
+            <input type="submit" value="Сократить">
+            {#onClick="getShortUrl(); return 0">#}
+        </div>
 
+
+    </form>
+    <div id="shortUrlBlock">
+        <label for="shortUrl">Короткий адрес:</label>
+        <input type="text" id="shortUrl" readonly>
+    </div>
+
+{% endblock %}
+{% block scripts %}
+    <script src="/js/ajax.js"></script>
 {% endblock %}

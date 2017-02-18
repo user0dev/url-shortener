@@ -14,7 +14,7 @@ return array(
         "password" => "1234512345",
     ],
     "twig" => [
-        "cacheDir" => __DIR__ . "/cache",
+        "cacheDir" => __DIR__ . "/tmp",
         "templatesDir" => __DIR__ . "/src/Templates",
         "debug" => true,
     ],

@@ -16,13 +16,17 @@ abstract class ServerHelper
         header("Location: $location");
         exit();
     }
-    static public function pageNotFound($text = "") {
+
+    static public function pageNotFound($text = "Page not found") {
         header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
-        if (!$text) {
-            $text = "Page not found";
-        }
         exit($text);
     }
+
+    static public function internalError($text = "Internal Server Error") {
+        header($_SERVER["SERVER_PROTOCOL"] . "500 Internal Server Error");
+        exit($text);
+    }
+
     static public function symbNumberToURL($symbNumber) {
         return $_SERVER["HTTP_HOST"] . "/$symbNumber";
     }

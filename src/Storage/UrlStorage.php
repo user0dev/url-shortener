@@ -35,7 +35,7 @@ class UrlStorage
     {
         $id = ConvertIntSymb::SymbToInt($shortUrl);
         $stmt = $this->pdo->prepare(Queries::GET_LONG_URL);
-        $stmt->bindValue(1, $id, \PDO::PARAM_INT);
+        $stmt->bindValue(":id", $id, \PDO::PARAM_INT);
         $stmt->execute();
         $result = $stmt->fetchAll();
         var_dump($result);

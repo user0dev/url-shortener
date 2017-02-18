@@ -12,7 +12,7 @@ namespace User0dev\UrlShortener\Utils;
 abstract class ConvertIntSymb
 {
     //const ABC = "abcdefghijklmnopqastuvwxyzABCDEFGHIJKLMNOPQASTUVWXYZ1234567890-_.~";
-    const allowedSymbols = '-.ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~';
+    const allowedSymbols = '-ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~';
     const generateSymbols = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
     static public function intToSymb($int) {

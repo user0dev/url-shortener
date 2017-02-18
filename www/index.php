@@ -12,25 +12,26 @@ $config = include __DIR__ . "/../config.php";
 
 use \User0dev\UrlShortener\Storage\UrlStorage;
 use \User0dev\UrlShortener\Templating\TwigTemplateEngine;
-
+use \User0dev\UrlShortener\Utils\Validator;
+use \User0dev\UrlShortener\Utils\ServerHelper;
 
 
 $store = new UrlStorage($config["db"]);
 
-$templateEngine = new TwigTemplateEngine($config["twig"]);
+$url = Validator::stringSanitize(substr($_SERVER["REQUEST_URI"], 1));
+if ($url == "" || $url == "index.php") {
+    $templateEngine = new TwigTemplateEngine($config["twig"]);
 
-echo $templateEngine->render("main.twig");
+    echo $templateEngine->render("main.twig");
 
-//
-//if (isset($_GET["u"])) {
-//    $shortUrl = $_GET["u"];
-//    $longUrl = $store->getLongUrl($shortUrl);
-//    if ($longUrl) {
-//        header("Location: $longUrl");
-//        exit();
-//    } else {
-//        header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
-//        exit();
-//    }
-//}
-//
+} elseif (Validator::shortUrlValidation($url)) {
+    $longUrl = $store->getLongUrl($url);
+    if ($longUrl) {
+        ServerHelper::location($longUrl);
+    } else {
+        ServerHelper::pageNotFound();
+    }
+} else {
+    ServerHelper::pageNotFound();
+}
+

@@ -18,20 +18,20 @@ $config = include __DIR__ . "/../config.php";
 $longUrl = "";
 
 if (isset($_POST["long-url"])) {
-    $longUrl = Validator::stringSanitize($_POST["long-url"]);
-    if (!Validator::longUrlValidation($longUrl)) {
-        $longUrl = "";
-    }
+	$longUrl = Validator::stringSanitize($_POST["long-url"]);
+	if (!Validator::longUrlValidation($longUrl)) {
+		$longUrl = "";
+	}
 }
 
 if (!$longUrl) {
-    ServerHelper::badRequest();
+	ServerHelper::badRequest();
 }
 
 $store = new UrlStorage($config["db"]);
 $symbNumber = $store->addLongUrl($longUrl);
 if (!$symbNumber) {
-    ServerHelper::internalError();
+	ServerHelper::internalError();
 }
 
 $shortUrl = ServerHelper::addAddressPart($symbNumber);

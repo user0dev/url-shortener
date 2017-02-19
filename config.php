@@ -6,17 +6,17 @@
  * Time: 4:12
  */
 return array(
-    "db" => [
-        "type" => "mysql",
-        "host" => "localhost",
-        "dbname" => "url_shortener",
-        "user" => "root",
-        "password" => "1234512345",
-    ],
-    "twig" => [
-        "cacheDir" => __DIR__ . "/tmp",
-        "templatesDir" => __DIR__ . "/www/Templates",
-        "debug" => true,
-    ],
+	"db" => [
+		"type" => "mysql",
+		"host" => "localhost",
+		"dbname" => "url_shortener",
+		"user" => "root",
+		"password" => "1234512345",
+	],
+	"twig" => [
+		"cacheDir" => __DIR__ . "/tmp",
+		"templatesDir" => __DIR__ . "/www/Templates",
+		"debug" => true,
+	],
 
 );

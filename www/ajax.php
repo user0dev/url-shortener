@@ -21,11 +21,11 @@ use \User0dev\UrlShortener\Utils\ServerHelper;
 
 if (!isset($_REQUEST["long-url"])) {
 
-    ServerHelper::badRequest();
+	ServerHelper::badRequest();
 }
 $longUrl = Validator::stringSanitize($_REQUEST['long-url']);
 if (!Validator::longUrlValidation($longUrl)) {
-    ServerHelper::badRequest();
+	ServerHelper::badRequest();
 }
 
 $store = new UrlStorage($config["db"]);
@@ -33,13 +33,13 @@ $store = new UrlStorage($config["db"]);
 
 $shortUrl = $store->addLongUrl($longUrl);
 if (!$shortUrl) {
-    ServerHelper::internalError();
+	ServerHelper::internalError();
 }
 
 $result = ["shortUrl" => ""];
 
 if ($shortUrl) {
-    $result["shortUrl"] = ServerHelper::addAddressPart($shortUrl);
+	$result["shortUrl"] = ServerHelper::addAddressPart($shortUrl);
 }
 
 echo json_encode($result);

@@ -20,18 +20,18 @@ $store = new UrlStorage($config["db"]);
 
 $url = Validator::stringSanitize(substr($_SERVER["REQUEST_URI"], 1));
 if ($url == "" || $url == "index.php") {
-    $templateEngine = new TwigTemplateEngine($config["twig"]);
+	$templateEngine = new TwigTemplateEngine($config["twig"]);
 
-    echo $templateEngine->render("main.twig");
+	echo $templateEngine->render("main.twig");
 
 } elseif (Validator::shortUrlValidation($url)) {
-    $longUrl = $store->getLongUrl($url);
-    if ($longUrl) {
-        ServerHelper::location($longUrl);
-    } else {
-        ServerHelper::pageNotFound();
-    }
+	$longUrl = $store->getLongUrl($url);
+	if ($longUrl) {
+		ServerHelper::location($longUrl);
+	} else {
+		ServerHelper::pageNotFound();
+	}
 } else {
-    ServerHelper::badRequest();
+	ServerHelper::badRequest();
 }
 

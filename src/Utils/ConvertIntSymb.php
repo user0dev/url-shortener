@@ -13,10 +13,10 @@ abstract class ConvertIntSymb
 {
 	//const ABC = "abcdefghijklmnopqastuvwxyzABCDEFGHIJKLMNOPQASTUVWXYZ1234567890-_.~";
 //    const allowedSymbols = '-ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~';
-//const GENERATED_SYMBOLS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+	const GENERATED_SYMBOLS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 	const ALLOWED_SYMBOLS = self::GENERATED_SYMBOLS;
 
-	static public function intToSymb($int)
+	public static function intToSymb($int)
 	{
 		$int = (int) $int;
 		if ($int < 0) {
@@ -33,7 +33,7 @@ abstract class ConvertIntSymb
 		return $result;
 	}
 
-	static public function symbToInt($val)
+	public static function symbToInt($val)
 	{
 		$var = (string) $val;
 		if (!self::isAllowedStr($val)) {
@@ -48,12 +48,12 @@ abstract class ConvertIntSymb
 		return $result;
 	}
 
-	static public function getPermitCharacters()
+	public static function getPermitCharacters()
 	{
 		return self::ALLOWED_SYMBOLS;
 	}
 
-	static public function isAllowedStr($str)
+	public static function isAllowedStr($str)
 	{
 		$str = (string) $str;
 		return preg_match("/[^" . self::ALLOWED_SYMBOLS . "]+/", $str) === 0;

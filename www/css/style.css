@@ -1,3 +1,63 @@
 #shortUrlBlock {
-    display: none;
+    visibility: hidden;
+	margin-top: 15px;
+	border: 1px solid #c9d0d6;
+	padding: 8px;
+	background: #e1e7ed;
+	font-weight: bold;
+}
+
+#shortUrlBlock input {
+	border: none;
+	display: inline-block;
+	width: 100%;
+	background: #e1e7ed;;
+}
+
+.element {
+	border: none;
+}
+.element:focus {
+	outline: none;
+}
+
+input.element {
+	width: 270px;
+	display: inline-block;
+}
+
+button.element, .border-button {
+	background: #5e81a8;
+	color: white;
+}
+
+.border-input, .border-button {
+	border-radius: 4px;
+	padding: 8px;
+	display: inline-block;
+
+}
+
+.border-input {
+	border: 1px solid #c9d0d6;
+	margin-right: 10px;
+
+}
+
+.inputs {
+	margin-top: 15px;
+}
+
+
+#longUrl {
+}
+
+.text {
+	text-align: center;
+}
+
+.main-block {
+	width: 400px;
+	margin: 0 auto;
+	margin-top: 100px;
 }

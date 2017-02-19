@@ -13,10 +13,12 @@ function getShortUrl() {
 		if (this.readyState == 4 && this.status == 200) {
 			var shortUrl = JSON.parse(this.responseText).shortUrl;
 			if (shortUrl != "") {
-				document.getElementById("shortUrlBlock").style.display = "block";
+				document.getElementById("shortUrlBlock").style.visibility = "visible";
 				document.getElementById("shortUrl").value = shortUrl;
+				document.getElementById("inputForm").onsubmit = function () {
+					return false;
+				};
 			}
-
 		}
 	};
 	xmlhttp.open("GET", "ajax.php?long-url=" + longUrl, true);

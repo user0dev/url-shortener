@@ -2,19 +2,20 @@
 
 {% block content %}
 
-	<form action="showurl.php" method="post" onsubmit="getShortUrl(); return false">
-		<div><label for="longUrl">Введите ссылку которую хотите сократить</label></div>
-		<div>
-			<input type="url" name="long-url" id="longUrl" value="">
-			<input type="submit" value="Сократить">
+
+	<form id="inputForm" class="main-block" action="showurl.php" method="post" onsubmit="getShortUrl(); return false">
+		<div class="text">Введите ссылку которую хотите сократить</div>
+		<div class="inputs">
+			<span class="border-input"><input class="element" type="url" name="long-url" id="longUrl" value="http://phpfaq.ru/debug" required></span>
+			<span class="border-button"><button class="element" type="submit">Сократить</button></span>
 		</div>
 
+		<div id="shortUrlBlock">
+			<input type="text" id="shortUrl" readonly>
+		</div>
 
 	</form>
-	<div id="shortUrlBlock">
-		<label for="shortUrl">Короткий адрес:</label>
-		<input type="text" id="shortUrl" readonly>
-	</div>
+
 
 {% endblock %}
 {% block scripts %}

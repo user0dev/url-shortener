@@ -37,7 +37,9 @@ class UrlStorage
 		}
 		$stmt = $this->pdo->prepare(Queries::INSERT_URL);
 		$stmt->bindValue(":long_url", $longUrl);
-		$stmt->execute();
+		if ($stmt->execute() != 1) {
+			return false;
+		}
 		$newId = $this->pdo->lastInsertId("id");
 		return $newId;
 	}
@@ -49,7 +51,6 @@ class UrlStorage
 		$stmt->bindValue(":id", $id, \PDO::PARAM_INT);
 		$stmt->execute();
 		$result = $stmt->fetchAll();
-		//var_dump($result);
 		if ($result) {
 			return $result[0]["long_url"];
 		} else {
@@ -59,11 +60,24 @@ class UrlStorage
 
 	public function addUrlUserDefined($longUrl, $shortName)
 	{
-		// todo
+		if ($this->getUrlUserDefined($shortName)) {
+			return false;
+		}
+		$stmt = $this->pdo->prepare(Queries::INSERT_USER_DEFINED_URL);
+		$stmt->bindValue(":short_name", $shortName);
+		$stmt->bindValue(":long_url", $longUrl);
+		return $stmt->execute() == 1;
 	}
 
 	public function getUrlUserDefined($shortName)
 	{
-		// todo
+		$stmt = $this->pdo->prepare(Queries::GET_USER_DEFINED_URL);
+		$stmt->bindValue(":short_name", $shortName);
+		$stmt->execute();
+		$result = $stmt->fetchAll();
+		if ($result) {
+			return $result[0]["long_url"];
+		}
+		return null;
 	}
 }

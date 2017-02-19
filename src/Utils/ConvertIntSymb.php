@@ -18,9 +18,8 @@ abstract class ConvertIntSymb
 
     static public function intToSymb($int)
     {
-        if (!is_int($int)) {
-            throw new \InvalidArgumentException("Parameter '$int' must be type 'INT'");
-        } elseif ($int < 0) {
+        $int = (int) $int;
+        if ($int < 0) {
             throw new \InvalidArgumentException("Parameter '$int' must be greater or equal to 0");
         }
         if ($int == 0) {

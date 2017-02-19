@@ -35,7 +35,8 @@ abstract class ServerHelper
 		exit($text);
 	}
 
-	public static function addAddressPart($path) {
+	public static function addAddressPart($path)
+	{
 		return $_SERVER["HTTP_HOST"] . "/$path";
 	}
 }

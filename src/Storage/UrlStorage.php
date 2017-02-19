@@ -14,6 +14,7 @@ use User0dev\UrlShortener\Utils\ConvertIntSymb;
 class UrlStorage
 {
 	protected $pdo;
+
 	public function __construct(array $config)
 	{
 		$dsn = sprintf("%s:dbname=%s;host=%s", $config["type"], $config["dbname"], $config["host"]);

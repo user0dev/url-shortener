@@ -17,13 +17,21 @@ abstract class ServerHelper
         exit();
     }
 
-    static public function pageNotFound($text = "Page not found") {
+    static public function notFound($text = "Not found")
+    {
         header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
         exit($text);
     }
 
-    static public function internalError($text = "Internal Server Error") {
+    static public function internalError($text = "Internal Server Error")
+    {
         header($_SERVER["SERVER_PROTOCOL"] . "500 Internal Server Error");
+        exit($text);
+    }
+
+    static public function badRequest($text = "Bad Request")
+    {
+        header($_SERVER["SERVER_PROTOCOL"] . "400 Bad Request");
         exit($text);
     }
 

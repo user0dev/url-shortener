@@ -14,9 +14,9 @@ use User0dev\UrlShortener\Utils\Validator;
 use \User0dev\UrlShortener\Storage\UrlStorage;
 use \User0dev\UrlShortener\Utils\ServerHelper;
 
-//if ($_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest') {
-//    exit;
-//}
+if ($_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest') {
+    exit;
+}
 
 if (!isset($_GET["long-url"])) {
     exit;

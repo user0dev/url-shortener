@@ -32,6 +32,6 @@ if ($url == "" || $url == "index.php") {
         ServerHelper::pageNotFound();
     }
 } else {
-    ServerHelper::pageNotFound();
+    ServerHelper::badRequest();
 }
 

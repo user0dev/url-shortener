@@ -25,7 +25,7 @@ if (isset($_POST["long-url"])) {
 }
 
 if (!$longUrl) {
-    ServerHelper::internalError();
+    ServerHelper::badRequest();
 }
 
 $store = new UrlStorage($config["db"]);

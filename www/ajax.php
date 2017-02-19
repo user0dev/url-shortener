@@ -13,6 +13,7 @@ $config = include __DIR__ . "/../config.php";
 use User0dev\UrlShortener\Utils\Validator;
 use \User0dev\UrlShortener\Storage\UrlStorage;
 use \User0dev\UrlShortener\Utils\ServerHelper;
+use User0dev\UrlShortener\Utils\ConvertIntSymb;
 
 
 //if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || $_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest') {
@@ -31,7 +32,7 @@ if (!Validator::longUrlValidation($longUrl)) {
 $store = new UrlStorage($config["db"]);
 
 
-$shortUrl = $store->addLongUrl($longUrl);
+$shortUrl = ConvertIntSymb::intToSymb($store->addUrlGenerated($longUrl));
 if (!$shortUrl) {
 	ServerHelper::internalError();
 }

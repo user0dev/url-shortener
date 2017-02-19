@@ -14,6 +14,7 @@ use \User0dev\UrlShortener\Storage\UrlStorage;
 use \User0dev\UrlShortener\Templating\TwigTemplateEngine;
 use \User0dev\UrlShortener\Utils\Validator;
 use \User0dev\UrlShortener\Utils\ServerHelper;
+use \User0dev\UrlShortener\Utils\ConvertIntSymb;
 
 
 $store = new UrlStorage($config["db"]);
@@ -25,11 +26,11 @@ if ($url == "" || $url == "index.php") {
 	echo $templateEngine->render("main.twig");
 
 } elseif (Validator::shortUrlValidation($url)) {
-	$longUrl = $store->getLongUrl($url);
+	$longUrl = $store->getUrlGenerated(ConvertIntSymb::symbToInt($url));
 	if ($longUrl) {
 		ServerHelper::location($longUrl);
 	} else {
-		ServerHelper::pageNotFound();
+		ServerHelper::notFound();
 	}
 } else {
 	ServerHelper::badRequest();

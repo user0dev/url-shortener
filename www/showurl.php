@@ -10,6 +10,7 @@ use User0dev\UrlShortener\Utils\Validator;
 use User0dev\UrlShortener\Utils\ServerHelper;
 use User0dev\UrlShortener\Storage\UrlStorage;
 use User0dev\UrlShortener\Templating\TwigTemplateEngine;
+use User0dev\UrlShortener\Utils\ConvertIntSymb;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -29,7 +30,7 @@ if (!$longUrl) {
 }
 
 $store = new UrlStorage($config["db"]);
-$symbNumber = $store->addLongUrl($longUrl);
+$symbNumber = ConvertIntSymb::intToSymb($store->addUrlGenerated($longUrl));
 if (!$symbNumber) {
 	ServerHelper::internalError();
 }

@@ -15,9 +15,9 @@ function getShortUrl() {
 			if (shortUrl != "") {
 				document.getElementById("shortUrlBlock").style.visibility = "visible";
 				document.getElementById("shortUrl").value = shortUrl;
-				document.getElementById("inputForm").onsubmit = function () {
-					return false;
-				};
+				// document.getElementById("inputForm").onsubmit = function () {
+				// 	return false;
+				// };
 			}
 		}
 	};

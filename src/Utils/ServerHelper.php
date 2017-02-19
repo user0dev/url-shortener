@@ -35,7 +35,7 @@ abstract class ServerHelper
         exit($text);
     }
 
-    static public function symbNumberToURL($symbNumber) {
-        return $_SERVER["HTTP_HOST"] . "/$symbNumber";
+    static public function addAddressPart($path) {
+        return $_SERVER["HTTP_HOST"] . "/$path";
     }
 }

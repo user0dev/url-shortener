@@ -34,7 +34,7 @@ if (!$symbNumber) {
     ServerHelper::internalError();
 }
 
-$shortUrl = ServerHelper::symbNumberToURL($symbNumber);
+$shortUrl = ServerHelper::addAddressPart($symbNumber);
 
 $templateEngine = new TwigTemplateEngine($config["twig"]);
 

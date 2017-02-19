@@ -2,7 +2,7 @@
 
 {% block content %}
 
-    <form action="showurl.php" method="post" onsubmit="getShortUrl(); return false">
+    <form action="ajax.php" method="post"> {#onsubmit="getShortUrl(); return false">#}
         <div><label for="longUrl">Введите ссылку которую хотите сократить</label></div>
         <div>
             <input type="url" name="long-url" id="longUrl" value="https://www.youtube.com/watch?v=26AuV9bwHCw">

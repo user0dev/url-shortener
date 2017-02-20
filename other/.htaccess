@@ -14,7 +14,7 @@ RewriteEngine on
 
 RewriteRule ^ajax.php$  /www/ajax.php [L]
 RewriteRule ^[0-9a-zA-Z]+$ /www/index.php [L]
+RewriteCond %{HTTP_HOST} ^easylink.rf.gd$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^www.easylink.rf.gd$
+RewriteCond %{REQUEST_URI} !www/
 RewriteRule (.*) /www/$1 [L]
-
-
-

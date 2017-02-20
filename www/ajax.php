@@ -24,9 +24,15 @@ if (!isset($_REQUEST["long-url"])) {
 
 	ServerHelper::badRequest();
 }
-$longUrl = Validator::stringSanitize($_REQUEST['long-url']);
+$longUrl = trim(Validator::stringSanitize($_REQUEST['long-url']));
 if (!Validator::longUrlValidation($longUrl)) {
 	ServerHelper::badRequest();
+}
+
+$shortName = "";
+if (isset($_REQUEST["short-name"])) {
+	$shortName = trim(Validator::stringSanitize($_REQUEST["short-name"]));
+
 }
 
 $store = new UrlStorage($config["db"]);

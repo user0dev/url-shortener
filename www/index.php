@@ -10,14 +10,14 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $config = include __DIR__ . "/../config.php";
 
-use \User0dev\UrlShortener\Storage\UrlStorage;
+use \User0dev\UrlShortener\Storage\StorageController;
 use \User0dev\UrlShortener\Templating\TwigTemplateEngine;
 use \User0dev\UrlShortener\Utils\Validator;
 use \User0dev\UrlShortener\Utils\ServerHelper;
 use \User0dev\UrlShortener\Utils\ConvertIntSymb;
 
 
-$store = new UrlStorage($config["db"]);
+$store = new StorageController($config["db"]);
 
 $url = Validator::stringSanitize(substr($_SERVER["REQUEST_URI"], 1));
 if ($url == "" || $url == "index.php") {

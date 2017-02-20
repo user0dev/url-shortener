@@ -14,7 +14,7 @@ abstract class ConvertIntSymb
 	//const ABC = "abcdefghijklmnopqastuvwxyzABCDEFGHIJKLMNOPQASTUVWXYZ1234567890-_.~";
 //    const allowedSymbols = '-ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~';
 	const GENERATED_SYMBOLS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-	const ALLOWED_SYMBOLS = self::GENERATED_SYMBOLS;
+	const ALLOWED_SYMBOLS = self::GENERATED_SYMBOLS . "~_-";
 
 	public static function intToSymb($int)
 	{
@@ -56,7 +56,7 @@ abstract class ConvertIntSymb
 	public static function isAllowedStr($str)
 	{
 		$str = (string) $str;
-		return preg_match("/[^" . self::ALLOWED_SYMBOLS . "]+/", $str) === 0;
+		return preg_match("/^[^" . self::ALLOWED_SYMBOLS . "]+$/", $str) === 0;
 	}
 
 }

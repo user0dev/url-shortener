@@ -3,10 +3,13 @@
 {% block content %}
 
 
-	<form id="inputForm" class="main-block" action="showurl.php" method="post" onsubmit="getShortUrl(); return false">
-		<div class="text">Введите ссылку которую хотите сократить</div>
+	<form id="inputForm" class="main-block" action="ajax.php" method="post">{# onsubmit="getShortUrl(); return false">#}
+		<h2 class="text">Введите ссылку которую хотите сократить</h2>
 		<div class="inputs">
-			<span class="border-input"><input class="element" type="url" name="long-url" id="longUrl" value="http://phpfaq.ru/debug" required></span>
+			<label for="longUrl">Введите ссылку:</label>
+			<span class="border-input long-url"><input class="element" type="url" name="long-url" id="longUrl" value="http://phpfaq.ru/debug" required></span><br>
+			<label for="shortName">Желаемый текст:</label>
+			<span class="border-input"><input class="element" type="text" name="short-name" id="shortName" pattern="^[^{{ allowedSymbols }}]+$"></span>
 			<span class="border-button"><button class="element" type="submit">Сократить</button></span>
 		</div>
 

@@ -38,13 +38,15 @@ button.element, .border-button {
 
 }
 
+
+
+.border-button {
+	float: right;
+}
+
 .border-input {
 	border: 1px solid #c9d0d6;
 	margin-right: 10px;
-
-}
-
-.inputs {
 	margin-top: 15px;
 }
 
@@ -57,7 +59,11 @@ button.element, .border-button {
 }
 
 .main-block {
-	width: 400px;
+	width: 540px;
 	margin: 0 auto;
 	margin-top: 100px;
+}
+
+.long-url {
+	border-color: red;
 }

@@ -13,6 +13,10 @@ use User0dev\UrlShortener\Utils\ConvertIntSymb;
 
 class UrlStorage
 {
+	const STATUS_SUCCESS = 0;
+	const STATUS_DOUBLE = 1;
+	const STATUS_ERROR = 2;
+
 	protected $pdo;
 
 	public function __construct(array $config)
@@ -61,12 +65,12 @@ class UrlStorage
 	public function addUrlUserDefined($longUrl, $shortName)
 	{
 		if ($this->getUrlUserDefined($shortName)) {
-			return false;
+			return self::STATUS_DOUBLE;
 		}
 		$stmt = $this->pdo->prepare(Queries::INSERT_USER_DEFINED_URL);
 		$stmt->bindValue(":short_name", $shortName);
 		$stmt->bindValue(":long_url", $longUrl);
-		return $stmt->execute() == 1;
+		return ($stmt->execute() == 1) ? self::STATUS_SUCCESS : self::STATUS_ERROR;
 	}
 
 	public function getUrlUserDefined($shortName)

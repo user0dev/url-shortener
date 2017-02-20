@@ -21,6 +21,10 @@ function getShortUrl() {
 			}
 		}
 	};
-	xmlhttp.open("GET", "ajax.php?long-url=" + longUrl, true);
+	var shortName = document.getElementById("shortName").value.trim();
+	if (shortName !== "") {
+		shortName = "&short-name=" + shortName;
+	}
+	xmlhttp.open("GET", "ajax.php?long-url=" + longUrl + shortName, true);
 	xmlhttp.send();
 }

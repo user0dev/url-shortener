@@ -1,0 +1,21 @@
+php_value display_errors On
+php_flag magic_quotes 1
+php_flag magic_quotes_gpc 1
+php_value mbstring.http_input auto
+php_value date.timezone Europe/Moscow
+
+Options All -Indexes
+
+<Files config.php>
+    deny from all
+</Files>
+
+RewriteEngine on
+
+RewriteRule ^ajax.php$  /www/ajax.php [L]
+RewriteRule ^[0-9a-z]+$ /www/index.php [L]
+RewriteCond %{REQUEST_URI} !www/
+RewriteRule (.*) /www/$1 [L]
+
+
+

@@ -21,7 +21,7 @@ $store = new UrlStorage($config["db"]);
 
 $url = Validator::stringSanitize($_SERVER["REQUEST_URI"]);
 
-$url = preg_replace('/(^\/)|(index.php$)/', "", $url);
+$url = preg_replace('/(^\/www\/)|(^\/)|(index.php$)/', "", $url);
 
 
 if ($url == "") {

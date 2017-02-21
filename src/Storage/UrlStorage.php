@@ -19,6 +19,11 @@ class UrlStorage
 
 	protected $pdo;
 
+	protected function runPrepare($query, $param)
+	{
+
+	}
+
 	public function __construct(array $config)
 	{
 		$dsn = sprintf("%s:dbname=%s;host=%s", $config["type"], $config["dbname"], $config["host"]);
@@ -84,4 +89,44 @@ class UrlStorage
 		}
 		return null;
 	}
+
+	public function addUrl($longUrl, $shortName = "", &$isDouble = false)
+	{
+		$isDouble = false;
+		if ($shortName) {
+			$result = $this->storage->addUrlUserDefined($longUrl, $shortName);
+			if ($result === UrlStorage::STATUS_SUCCESS) {
+				return ServerHelper::addAddressPart(self::USER_SYMBOL . $shortName);
+			} elseif ($result === UrlStorage::STATUS_DOUBLE) {
+				$isDouble = true;
+			}
+			return "";
+		} else {
+			$id = $this->storage->addUrlGenerated($longUrl);
+			if ($id) {
+				return ServerHelper::addAddressPart(ConvertIntSymb::intToSymb($id));
+			} else {
+				return "";
+			}
+		}
+	}
+
+	public function getUrl($shortName)
+	{
+		$shortName = (string) $shortName;
+		if ($shortName[0] == self::USER_SYMBOL) {
+			$shortName = substr($shortName, 1);
+			$longUrl = $this->storage->getUrlUserDefined($shortName);
+			return $longUrl ?: "";
+		} else {
+			$longUrl = $this->storage->getUrlGenerated(ConvertIntSymb::symbToInt($shortName));
+			return $longUrl ?: "";
+		}
+	}
+	public function testUserUrl($shortName)
+	{
+		$shortName = (string) $shortName;
+		return (bool) $this->storage->getUrlUserDefined($shortName);
+	}
+
 }

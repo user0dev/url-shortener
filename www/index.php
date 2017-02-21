@@ -19,13 +19,18 @@ use \User0dev\UrlShortener\Utils\ConvertIntSymb;
 
 $store = new UrlStorage($config["db"]);
 
-$url = Validator::stringSanitize(substr($_SERVER["REQUEST_URI"], 1));
-if ($url == "" || $url == "index.php") {
+$url = Validator::stringSanitize($_SERVER["REQUEST_URI"]);
+
+$url = preg_replace('/(^\/)|(index.php$)/', "", $url);
+
+
+if ($url == "") {
 	$templateEngine = new TwigTemplateEngine($config["twig"]);
 
 	echo $templateEngine->render("main.twig");
 
 } elseif (Validator::shortUrlValidation($url)) {
+
 	$longUrl = $store->getUrlGenerated(ConvertIntSymb::symbToInt($url));
 	if ($longUrl) {
 		ServerHelper::location($longUrl);

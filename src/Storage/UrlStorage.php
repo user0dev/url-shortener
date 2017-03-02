@@ -13,9 +13,9 @@ use User0dev\UrlShortener\Utils\ConvertIntSymb;
 
 class UrlStorage
 {
-	const STATUS_SUCCESS = 0;
+	const STATUS_SUCCESS = 2;
 	const STATUS_DOUBLE = 1;
-	const STATUS_ERROR = 2;
+	const STATUS_ERROR = 0;
 
 	protected $pdo;
 

@@ -17,11 +17,20 @@ class UrlStorage
 	const STATUS_DOUBLE = 1;
 	const STATUS_ERROR = 0;
 
-	protected $pdo;
 
-	protected function runPrepare($query, $param)
+	protected function mkValue($name, $value, $type = \PDO::PARAM_STR)
+    {
+        return ["name" => $name, "value" => $value, "type" => $type];
+    }
+
+	protected function runPrepare($query, array $param = [], &$result = false)
 	{
-
+        $stmt = $this->pdo->prepare($query);
+        foreach($param as $value) {
+            $stmt->bindValue($value["name"], $value["value"], $value["type"]);
+        }
+        $result = $stmt->execute();
+        return $stmt;
 	}
 
 	public function __construct(array $config)
@@ -37,10 +46,11 @@ class UrlStorage
 
 	public function addUrlGenerated($longUrl)
 	{
-		$stmt = $this->pdo->prepare(Queries::GET_ID_BY_LONG_URL);
-		$stmt->bindValue(":long_url", $longUrl);
-		$stmt->execute();
-		$result = $stmt->fetchAll();
+//		$stmt = $this->pdo->prepare(Queries::GET_ID_BY_LONG_URL);
+//		$stmt->bindValue(":long_url", $longUrl);
+//		$stmt->execute();
+//		$result = $stmt->fetchAll();
+        $result = $this->runPrepare(Queries::GET_ID_BY_LONG_URL);
 		if ($result) {
 			return $result[0]["id"];
 		}
@@ -67,28 +77,28 @@ class UrlStorage
 		}
 	}
 
-	public function addUrlUserDefined($longUrl, $shortName)
-	{
-		if ($this->getUrlUserDefined($shortName)) {
-			return self::STATUS_DOUBLE;
-		}
-		$stmt = $this->pdo->prepare(Queries::INSERT_USER_DEFINED_URL);
-		$stmt->bindValue(":short_name", $shortName);
-		$stmt->bindValue(":long_url", $longUrl);
-		return ($stmt->execute() == 1) ? self::STATUS_SUCCESS : self::STATUS_ERROR;
-	}
-
-	public function getUrlUserDefined($shortName)
-	{
-		$stmt = $this->pdo->prepare(Queries::GET_USER_DEFINED_URL);
-		$stmt->bindValue(":short_name", $shortName);
-		$stmt->execute();
-		$result = $stmt->fetchAll();
-		if ($result) {
-			return $result[0]["long_url"];
-		}
-		return null;
-	}
+//	public function addUrlUserDefined($longUrl, $shortName)
+//	{
+//		if ($this->getUrlUserDefined($shortName)) {
+//			return self::STATUS_DOUBLE;
+//		}
+//		$stmt = $this->pdo->prepare(Queries::INSERT_USER_DEFINED_URL);
+//		$stmt->bindValue(":short_name", $shortName);
+//		$stmt->bindValue(":long_url", $longUrl);
+//		return ($stmt->execute() == 1) ? self::STATUS_SUCCESS : self::STATUS_ERROR;
+//	}
+//
+//	public function getUrlUserDefined($shortName)
+//	{
+//		$stmt = $this->pdo->prepare(Queries::GET_USER_DEFINED_URL);
+//		$stmt->bindValue(":short_name", $shortName);
+//		$stmt->execute();
+//		$result = $stmt->fetchAll();
+//		if ($result) {
+//			return $result[0]["long_url"];
+//		}
+//		return null;
+//	}
 
 	public function addUrl($longUrl, $shortName = "", &$isDouble = false)
 	{

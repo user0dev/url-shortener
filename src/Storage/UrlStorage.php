@@ -10,6 +10,8 @@ namespace User0dev\UrlShortener\Storage;
 
 
 use User0dev\UrlShortener\Utils\ConvertIntSymb;
+use \User0dev\UrlShortener\Error\USStorageException;
+use \User0dev\UrlShortener\Error\ErrorCodes;
 
 class UrlStorage
 {
@@ -17,11 +19,12 @@ class UrlStorage
 	const STATUS_DOUBLE = 1;
 	const STATUS_ERROR = 0;
 
+	protected $pdo = null;
 
 	protected function mkValue($name, $value, $type = \PDO::PARAM_STR)
-    {
-        return ["name" => $name, "value" => $value, "type" => $type];
-    }
+	{
+		return ["name" => $name, "value" => $value, "type" => $type];
+	}
 
 	protected function runPrepare($query, array $param = [], &$result = false)
 	{
@@ -44,20 +47,62 @@ class UrlStorage
 
 
 
-	public function addUrlGenerated($longUrl)
+	protected function addUrlGenerated($longUrl)
 	{
 //		$stmt = $this->pdo->prepare(Queries::GET_ID_BY_LONG_URL);
 //		$stmt->bindValue(":long_url", $longUrl);
 //		$stmt->execute();
 //		$result = $stmt->fetchAll();
-        $result = $this->runPrepare(Queries::GET_ID_BY_LONG_URL);
-		if ($result) {
-			return $result[0]["id"];
-		}
-		$stmt = $this->pdo->prepare(Queries::INSERT_URL);
-		$stmt->bindValue(":long_url", $longUrl);
-		if ($stmt->execute() != 1) {
-			return false;
+//        $stmt = $this->runPrepare(Queries::GET_ID_BY_LONG_URL);
+//        $result = $stmt->fetchAll();
+//		if ($result) {
+//			return $result[0]["id"];
+//		}
+//		$stmt = $this->pdo->prepare(Queries::INSERT_URL);
+//		$stmt->bindValue(":long_url", $longUrl);
+//		if ($stmt->execute() != 1) {
+//			return false;
+//		}
+        try {
+			$this->pdo->beginTransaction();
+			$stmt = $this->runPrepare(Queries::INSERT_URL, [$this->mkValue(":long_url", $longUrl)], $result);
+			if (!$result) {
+				throw new USStorageException(
+					"Error execution query 'INSERT_URL' with longUrl: $longUrl. Error info: " . $stmt->errorInfo(),
+					ErrorCodes::DBError
+				);				
+			}
+			$id = $this->pdo->lastInsertId();
+			$stmt = $this->runPrepare(
+				Queries::UPDATE_SHORT_NAME,
+				[
+					$this->mkValue(":id", $id, \PDO::PARAM_INT),
+					$this->mkValue(":short_name", ConvertIntSymb::intToSymb($id)),
+				],
+				$result
+			);
+			if (!$result) {
+				throw new USStorageException(
+					"Error execution query 'UPDATE_SHORT_NAME' with id: $id. Error info: " . $stmt->errorInfo(),
+					ErrorCodes::DBError
+				);
+			}
+			$this->pdo->commit();
+		} catch (\PDOException $ex) {
+			if ($ex->getCode() == 23000) {
+				$stmt = $this->runPrepare(Queries::GET_ID_BY_LONG_URL, [mkValue(":long_url", $longUrl)], $result);
+				if (!$result) {
+					return false;
+				}
+				$list = $stmt->fetchAll();
+				if ($list && isset($list[0]["id"])) {
+					return $list[0]["id"];
+				} else {
+					return false;
+				}
+			}
+			$this->pdo->rollBack();
+			throw $ex;
 		}
 		$newId = $this->pdo->lastInsertId("id");
 		return $newId;

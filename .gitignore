@@ -1,5 +1,7 @@
 /vendor/
 /.idea/
 /cache/
-/tmp
-/notgit
+/tmp/
+/notgit/
+/nbproject/private/
+/nbproject/

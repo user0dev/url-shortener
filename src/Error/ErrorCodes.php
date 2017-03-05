@@ -11,5 +11,5 @@ namespace User0dev\UrlShortener\Error;
 
 class ErrorCodes
 {
-
+	const DBError = 100;
 }

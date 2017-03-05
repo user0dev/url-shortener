@@ -11,7 +11,7 @@ namespace User0dev\UrlShortener\Error;
 
 use Exception;
 
-class UrlShortenerException extends \Exception
+class USException extends \Exception
 {
 	public function __construct($message, $code, Exception $previous = null)
 	{

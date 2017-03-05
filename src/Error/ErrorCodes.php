@@ -12,4 +12,5 @@ namespace User0dev\UrlShortener\Error;
 class ErrorCodes
 {
 	const DBError = 100;
+	const DBStrangeError = 200;
 }

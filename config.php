@@ -10,8 +10,8 @@ return array(
 		"type" => "mysql",
 		"host" => "localhost",
 		"dbname" => "url_shortener",
-		"user" => "root",
-		"password" => "1234512345",
+		"user" => "url_shortener",
+		"password" => "12345",
 	],
 	"twig" => [
 		"cacheDir" => __DIR__ . "/tmp",

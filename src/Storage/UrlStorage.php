@@ -45,9 +45,25 @@ class UrlStorage
 		$this->pdo->exec(Queries::CREATE_USER_URLS);
 	}
 
+	protected function getShortNameGenerated($longUrl)
+	{
+		$stmt = $this->runPrepare(Queries::GET_ID_BY_LONG_URL, [$this->mkValue(":long_url", $longUrl)], $result);
+		if (!$result) {
+			throw new USStorageException(
+				"Error execution query 'GET_ID_BY_LONG_URL' with longUrl: $longUrl. Error info: " .
+				$stmt->errorInfo(),
+				ErrorCodes::DBError
+			);
+		}
+		$list = $stmt->fetchAll();
+		if ($list && isset($list[0]["id"])) {
+			return $list[0]["id"];
+		} else {
+			return false;
+		}
+	}
 
-
-	protected function addUrlGenerated($longUrl)
+	public function addUrlGenerated($longUrl)
 	{
 //		$stmt = $this->pdo->prepare(Queries::GET_ID_BY_LONG_URL);
 //		$stmt->bindValue(":long_url", $longUrl);
@@ -65,6 +81,10 @@ class UrlStorage
 //		}
 		$canDouble = true;
         try {
+//			$shortName = $this->getShortNameGenerated($longUrl);
+//			if ($shortName !== false) {
+//				return $shortName;
+//			}
 			$this->pdo->beginTransaction();
 			$stmt = $this->runPrepare(Queries::INSERT_URL, [$this->mkValue(":long_url", $longUrl)], $result);
 			if (!$result) {
@@ -75,6 +95,7 @@ class UrlStorage
 			}
 			$canDouble = false;
 			$id = $this->pdo->lastInsertId();
+			var_dump($id);
 			$shortName = ConvertIntSymb::intToSymb($id);
 			$stmt = $this->runPrepare(
 				Queries::UPDATE_SHORT_NAME,
@@ -96,20 +117,16 @@ class UrlStorage
 			
 		} catch (\PDOException $ex) {
 			if ($ex->getCode() == 23000 && $canDouble) {
-				$stmt = $this->runPrepare(Queries::GET_ID_BY_LONG_URL, [mkValue(":long_url", $longUrl)], $result);
-				if (!$result) {
+				$this->runPrepare(Queries::CLEAN_AUTO_INCREMENT);
+				$shortName = $this->getShortNameGenerated($longUrl);
+				if ($shortName) {
+					return $shortName;
+				} else {
 					throw new USStorageException(
-						"Error execution query 'GET_ID_BY_LONG_URL' with longUrl: $longUrl. Error info: " .
-						$stmt->errorInfo(),
-						ErrorCodes::DBError,
+						"Error. Can't find short name after double exception longUrl: $longUrl",
+						ErrorCodes::DBStrangeError,
 						$ex
 					);
-				}
-				$list = $stmt->fetchAll();
-				if ($list && isset($list[0]["id"])) {
-					return $list[0]["id"];
-				} else {
-					throw new USStorageException("Wrong result query 'GET_ID_BY_LONG_URL' ", ErrorCodes::DBError, $ex);
 				}
 			}
 			$this->pdo->rollBack();
@@ -120,6 +137,9 @@ class UrlStorage
 	public function getUrlGenerated($id)
 	{
 		$id = (int) $id;
+		if ($id == 0) {
+			return null;
+		}
 		$stmt = $this->pdo->prepare(Queries::GET_LONG_URL_BY_ID);
 		$stmt->bindValue(":id", $id, \PDO::PARAM_INT);
 		$stmt->execute();
@@ -154,43 +174,43 @@ class UrlStorage
 //		return null;
 //	}
 
-	public function addUrl($longUrl, $shortName = "", &$isDouble = false)
-	{
-		$isDouble = false;
-		if ($shortName) {
-			$result = $this->storage->addUrlUserDefined($longUrl, $shortName);
-			if ($result === UrlStorage::STATUS_SUCCESS) {
-				return ServerHelper::addAddressPart(self::USER_SYMBOL . $shortName);
-			} elseif ($result === UrlStorage::STATUS_DOUBLE) {
-				$isDouble = true;
-			}
-			return "";
-		} else {
-			$id = $this->storage->addUrlGenerated($longUrl);
-			if ($id) {
-				return ServerHelper::addAddressPart(ConvertIntSymb::intToSymb($id));
-			} else {
-				return "";
-			}
-		}
-	}
-
-	public function getUrl($shortName)
-	{
-		$shortName = (string) $shortName;
-		if ($shortName[0] == self::USER_SYMBOL) {
-			$shortName = substr($shortName, 1);
-			$longUrl = $this->storage->getUrlUserDefined($shortName);
-			return $longUrl ?: "";
-		} else {
-			$longUrl = $this->storage->getUrlGenerated(ConvertIntSymb::symbToInt($shortName));
-			return $longUrl ?: "";
-		}
-	}
-	public function testUserUrl($shortName)
-	{
-		$shortName = (string) $shortName;
-		return (bool) $this->storage->getUrlUserDefined($shortName);
-	}
+//	public function addUrl($longUrl, $shortName = "", &$isDouble = false)
+//	{
+//		$isDouble = false;
+//		if ($shortName) {
+//			$result = $this->storage->addUrlUserDefined($longUrl, $shortName);
+//			if ($result === UrlStorage::STATUS_SUCCESS) {
+//				return ServerHelper::addAddressPart(self::USER_SYMBOL . $shortName);
+//			} elseif ($result === UrlStorage::STATUS_DOUBLE) {
+//				$isDouble = true;
+//			}
+//			return "";
+//		} else {
+//			$id = $this->storage->addUrlGenerated($longUrl);
+//			if ($id) {
+//				return ServerHelper::addAddressPart(ConvertIntSymb::intToSymb($id));
+//			} else {
+//				return "";
+//			}
+//		}
+//	}
+//
+//	public function getUrl($shortName)
+//	{
+//		$shortName = (string) $shortName;
+//		if ($shortName[0] == self::USER_SYMBOL) {
+//			$shortName = substr($shortName, 1);
+//			$longUrl = $this->storage->getUrlUserDefined($shortName);
+//			return $longUrl ?: "";
+//		} else {
+//			$longUrl = $this->storage->getUrlGenerated(ConvertIntSymb::symbToInt($shortName));
+//			return $longUrl ?: "";
+//		}
+//	}
+//	public function testUserUrl($shortName)
+//	{
+//		$shortName = (string) $shortName;
+//		return (bool) $this->storage->getUrlUserDefined($shortName);
+//	}
 
 }

@@ -63,6 +63,7 @@ class UrlStorage
 //		if ($stmt->execute() != 1) {
 //			return false;
 //		}
+		$canDouble = true;
         try {
 			$this->pdo->beginTransaction();
 			$stmt = $this->runPrepare(Queries::INSERT_URL, [$this->mkValue(":long_url", $longUrl)], $result);
@@ -72,40 +73,48 @@ class UrlStorage
 					ErrorCodes::DBError
 				);				
 			}
+			$canDouble = false;
 			$id = $this->pdo->lastInsertId();
+			$shortName = ConvertIntSymb::intToSymb($id);
 			$stmt = $this->runPrepare(
 				Queries::UPDATE_SHORT_NAME,
 				[
 					$this->mkValue(":id", $id, \PDO::PARAM_INT),
-					$this->mkValue(":short_name", ConvertIntSymb::intToSymb($id)),
+					$this->mkValue(":short_name", $shortName),
 				],
 				$result
 			);
 			if (!$result) {
 				throw new USStorageException(
-					"Error execution query 'UPDATE_SHORT_NAME' with id: $id. Error info: " . $stmt->errorInfo(),
+					"Error execution query 'UPDATE_SHORT_NAME' with id: $id and shortName: $shortName. Error info: " . 
+					$stmt->errorInfo(),
 					ErrorCodes::DBError
 				);
 			}
 			$this->pdo->commit();
+			return $shortName;
+			
 		} catch (\PDOException $ex) {
-			if ($ex->getCode() == 23000) {
+			if ($ex->getCode() == 23000 && $canDouble) {
 				$stmt = $this->runPrepare(Queries::GET_ID_BY_LONG_URL, [mkValue(":long_url", $longUrl)], $result);
 				if (!$result) {
-					return false;
+					throw new USStorageException(
+						"Error execution query 'GET_ID_BY_LONG_URL' with longUrl: $longUrl. Error info: " .
+						$stmt->errorInfo(),
+						ErrorCodes::DBError,
+						$ex
+					);
 				}
 				$list = $stmt->fetchAll();
 				if ($list && isset($list[0]["id"])) {
 					return $list[0]["id"];
 				} else {
-					return false;
+					throw new USStorageException("Wrong result query 'GET_ID_BY_LONG_URL' ", ErrorCodes::DBError, $ex);
 				}
 			}
 			$this->pdo->rollBack();
 			throw $ex;
 		}
-		$newId = $this->pdo->lastInsertId("id");
-		return $newId;
 	}
 
 	public function getUrlGenerated($id)

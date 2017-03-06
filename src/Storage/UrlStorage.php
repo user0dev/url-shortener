@@ -95,7 +95,6 @@ class UrlStorage
 			}
 			$canDouble = false;
 			$id = $this->pdo->lastInsertId();
-			var_dump($id);
 			$shortName = ConvertIntSymb::intToSymb($id);
 			$stmt = $this->runPrepare(
 				Queries::UPDATE_SHORT_NAME,
@@ -134,20 +133,18 @@ class UrlStorage
 		}
 	}
 
-	public function getUrlGenerated($id)
+	public function getUrlGenerated($shortName)
 	{
-		$id = (int) $id;
-		if ($id == 0) {
-			return null;
-		}
-		$stmt = $this->pdo->prepare(Queries::GET_LONG_URL_BY_ID);
-		$stmt->bindValue(":id", $id, \PDO::PARAM_INT);
-		$stmt->execute();
+//		$stmt = $this->pdo->prepare(Queries::GET_LONG_URL_BY_ID);
+//		$stmt->bindValue(":id", $id, \PDO::PARAM_INT);
+//		$stmt->execute();
+		$stmt = $this->runPrepare(Queries::GET_LONG_URL, [$this->mkValue(":short_name", $shortName)], $res);
+		
 		$result = $stmt->fetchAll();
-		if ($result) {
+		if ($result && isset($result[0]["long_url"])) {
 			return $result[0]["long_url"];
 		} else {
-			return null;
+			return false;
 		}
 	}
 

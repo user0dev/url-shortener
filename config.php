@@ -5,7 +5,7 @@
  * Date: 17.02.17
  * Time: 4:12
  */
-return array(
+const CONFIG = array(
 	"db" => [
 		"type" => "mysql",
 		"host" => "localhost",

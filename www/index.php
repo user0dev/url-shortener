@@ -8,21 +8,21 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
+include_once __DIR__ . "/../config.php";
+$config = CONFIG;
 
 use \User0dev\UrlShortener\Templating\TwigTemplateEngine;
 use \User0dev\UrlShortener\Utils\Validator;
 use \User0dev\UrlShortener\Utils\ServerHelper;
 use \User0dev\UrlShortener\Utils\ConvertIntSymb;
-use \User0dev\UrlShortener\Utils\Init;
 use User0dev\UrlShortener\Storage\UrlStorage;
 
-$init = new Init();
 
-$store = new UrlStorage($init->getConfig()["db"]);
+$store = new UrlStorage($config["db"]);
 
 $url = Validator::stringSanitize(substr($_SERVER["REQUEST_URI"], 1));
 if ($url == "" || $url == "index.php") {
-	$templateEngine = new TwigTemplateEngine($init->getConfig()["twig"]);
+	$templateEngine = new TwigTemplateEngine($config["twig"]);
 
 	echo $templateEngine->render("main.twig");
 

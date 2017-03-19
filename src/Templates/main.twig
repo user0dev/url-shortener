@@ -3,7 +3,7 @@
 {% block content %}
 
 
-	<form id="inputForm" class="main-block" action="ajax.php" method="post">{# onsubmit="getShortUrl(); return false">#}
+	<form id="inputForm" class="main-block" action="showurl.php" method="get" onsubmit="getShortUrl(); return false">
 		<h2 class="text">Введите ссылку которую хотите сократить</h2>
 		<div class="inputs">
 			<label for="longUrl">Введите ссылку:</label>

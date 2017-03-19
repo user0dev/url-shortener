@@ -14,7 +14,8 @@ use User0dev\UrlShortener\Utils\ConvertIntSymb;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$config = include __DIR__ . "/../config.php";
+$init = new \User0dev\UrlShortener\Utils\Init();
+$config = $init->getConfig();
 
 $longUrl = "";
 

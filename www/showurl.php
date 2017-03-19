@@ -22,13 +22,16 @@ $longUrl = "";
 
 if (isset($_POST["long-url"])) {
 	$longUrl = Validator::stringSanitize($_POST["long-url"]);
+
 	if (!Validator::longUrlValidation($longUrl)) {
 		$longUrl = "";
 	}
 }
 
+
+
 if (!$longUrl) {
-	ServerHelper::badRequest();
+    ServerHelper::badRequest();
 }
 
 $store = new UrlStorage($config["db"]);

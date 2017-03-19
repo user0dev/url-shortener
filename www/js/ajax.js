@@ -4,8 +4,13 @@
 
 function getShortUrl() {
 	"use strict";
-	var longUrl = document.getElementById("longUrl").value;
+	var longUrl = null;
+    var longUrlElem = document.getElementById("longUrl");
+    if (longUrlElem !== null) {
+    	longUrl = longUrlElem.value;
+	}
 	if (typeof longUrl !== "string" || longUrl.length <= 0) {
+    	console.log("Long Url wrong");
 		return;
 	}
 	var xmlhttp = new XMLHttpRequest();
@@ -21,9 +26,15 @@ function getShortUrl() {
 			}
 		}
 	};
-	var shortName = document.getElementById("shortName").value.trim();
-	if (shortName !== "") {
-		shortName = "&short-name=" + shortName;
+	var shortName = "";
+	var shortNameElem = document.getElementById("shortName");
+	if (shortNameElem !== null) {
+        shortName = shortNameElem.value.trim();
+        if (typeof shortName === "string" && shortName !== "") {
+            shortName = "&short-name=" + shortName;
+        } else {
+        	shortName = "";
+		}
 	}
 	xmlhttp.open("GET", "ajax.php?long-url=" + longUrl + shortName, true);
 	xmlhttp.send();

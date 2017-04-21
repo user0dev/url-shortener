@@ -44,4 +44,4 @@ $shortUrl = ServerHelper::addAddressPart($symbNumber);
 
 $templateEngine = new TwigTemplateEngine($config["twig"]);
 
-echo $templateEngine->render("showShortUrlPage.twig", ["shortUrl" => $shortUrl, "longUrl" => $longUrl]);
+echo $templateEngine->render("url.html.twig", ["shortUrl" => $shortUrl, "longUrl" => $longUrl]);

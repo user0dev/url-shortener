@@ -24,7 +24,7 @@ $url = Validator::stringSanitize(substr($_SERVER["REQUEST_URI"], 1));
 if ($url == "" || $url == "index.php") {
 	$templateEngine = new TwigTemplateEngine($config["twig"]);
 
-	echo $templateEngine->render("main.twig");
+	echo $templateEngine->render("index.html.twig");
 
 } elseif (Validator::shortUrlValidation($url)) {
 	$longUrl = $store->getUrlGenerated(ConvertIntSymb::symbToInt($url));

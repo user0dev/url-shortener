@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+	<form id="inputForm" class="main-block" action="showurl.php" method="post" onsubmit="getShortUrl(); return false">
+		<div class="inputs">
+			<span class="border-input long-url">
+                <input class="element" type="text" name="long-url" id="longUrl" value="{{ longUrl }}" required
+                        {% block inpuUrl %}
+                        {% endblock %}
+                >
+            </span>
+            {% block submitBT %}
+            {% endblock %}
+		</div>
+
+		<div id="shortUrlBlock">
+			<input type="text" id="shortUrl" readonly value="{{ shortUrl }}">
+		</div>
+
+	</form>
+
+
+{% endblock %}
+{% block scripts %}
+	<script src="/js/ajax.js"></script>
+{% endblock %}

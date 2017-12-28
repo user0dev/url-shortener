@@ -9,9 +9,9 @@ const CONFIG = array(
 	"db" => [
 		"type" => "mysql",
 		"host" => "localhost",
-		"dbname" => "url_shortener",
-		"user" => "url_shortener",
-		"password" => "12345",
+		"dbname" => "database",
+		"user" => "user",
+		"password" => "password",
 	],
 	"twig" => [
 		"cacheDir" => __DIR__ . "/tmp",

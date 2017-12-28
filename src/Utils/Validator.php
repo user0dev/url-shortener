@@ -11,12 +11,12 @@ namespace User0dev\UrlShortener\Utils;
 
 abstract class Validator
 {
-	public static function shortUrlValidation(string $shortUrl): boolean
+	public static function shortUrlValidation(string $shortUrl): bool
 	{
 		return ConvertIntSymb::isAllowedStr($shortUrl);
 	}
 
-	public static function longUrlValidation(string $longUrl): boolean
+	public static function longUrlValidation(string $longUrl): bool
 	{
 		return filter_var($longUrl, FILTER_VALIDATE_URL) != "";
 	}

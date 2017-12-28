@@ -13,7 +13,7 @@ class ConvertIntSymb
 {
 	const GENERATED_SYMBOLS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
-	public static function intToSymb(integer $int): string
+	public static function intToSymb(int $int): string
 	{
 		if ($int < 0) {
 			throw new \InvalidArgumentException("Parameter '$int' must be greater or equal to 0");
@@ -29,7 +29,7 @@ class ConvertIntSymb
 		return $result;
 	}
 
-	public static function symbToInt(string $val) : integer
+	public static function symbToInt(string $val) : int
 	{
 		if (!self::isAllowedStr($val)) {
 			throw new \InvalidArgumentException("Parameter '$val' contained wrong symbols");
@@ -40,7 +40,7 @@ class ConvertIntSymb
 		for ($i = 0, $mul = 1; $i < $length; $i++, $mul *= $base) {
 			$result += strpos(self::GENERATED_SYMBOLS, $val[$i]) * $mul;
 		}
-		return $result;
+		return (int) $result;
 	}
 
 	public static function getPermitCharacters() : string
@@ -48,7 +48,7 @@ class ConvertIntSymb
 		return self::GENERATED_SYMBOLS;
 	}
 
-	public static function isAllowedStr(string $str) : boolean
+	public static function isAllowedStr(string $str): bool
 	{
 		return preg_match("/^[^" . self::GENERATED_SYMBOLS . "]+$/", $str) === 0;
 	}

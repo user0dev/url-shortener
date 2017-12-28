@@ -15,7 +15,6 @@ use \User0dev\UrlShortener\Utils\ServerHelper;
 use User0dev\UrlShortener\Utils\ConvertIntSymb;
 
 include_once __DIR__ . "/../config.php";
-$config = CONFIG;
 
 
 //if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || $_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest') {
@@ -37,7 +36,7 @@ if (isset($_REQUEST["short-name"])) {
 
 }
 
-$store = new UrlStorage($config["db"]);
+$store = new UrlStorage(CONFIG["db"]);
 
 
 $shortUrl = ConvertIntSymb::intToSymb($store->addUrlGenerated($longUrl));

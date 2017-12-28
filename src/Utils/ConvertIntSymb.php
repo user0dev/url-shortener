@@ -9,16 +9,12 @@
 namespace User0dev\UrlShortener\Utils;
 
 
-abstract class ConvertIntSymb
+class ConvertIntSymb
 {
-	//const ABC = "abcdefghijklmnopqastuvwxyzABCDEFGHIJKLMNOPQASTUVWXYZ1234567890-_.~";
-//    const allowedSymbols = '-ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~';
 	const GENERATED_SYMBOLS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-	const ALLOWED_SYMBOLS = self::GENERATED_SYMBOLS . "~_-";
 
-	public static function intToSymb($int)
+	public static function intToSymb(integer $int): string
 	{
-		$int = (int) $int;
 		if ($int < 0) {
 			throw new \InvalidArgumentException("Parameter '$int' must be greater or equal to 0");
 		}
@@ -33,9 +29,8 @@ abstract class ConvertIntSymb
 		return $result;
 	}
 
-	public static function symbToInt($val)
+	public static function symbToInt(string $val) : integer
 	{
-		$var = (string) $val;
 		if (!self::isAllowedStr($val)) {
 			throw new \InvalidArgumentException("Parameter '$val' contained wrong symbols");
 		}
@@ -48,15 +43,14 @@ abstract class ConvertIntSymb
 		return $result;
 	}
 
-	public static function getPermitCharacters()
+	public static function getPermitCharacters() : string
 	{
-		return self::ALLOWED_SYMBOLS;
+		return self::GENERATED_SYMBOLS;
 	}
 
-	public static function isAllowedStr($str)
+	public static function isAllowedStr(string $str) : boolean
 	{
-		$str = (string) $str;
-		return preg_match("/^[^" . self::ALLOWED_SYMBOLS . "]+$/", $str) === 0;
+		return preg_match("/^[^" . self::GENERATED_SYMBOLS . "]+$/", $str) === 0;
 	}
 
 }

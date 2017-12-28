@@ -11,6 +11,6 @@ namespace User0dev\UrlShortener\Templating;
 
 interface ITemplateEngine
 {
-	public function render($templateName, array $data = []);
+	public function render(string $templateName, array $data = []): string;
 
 }

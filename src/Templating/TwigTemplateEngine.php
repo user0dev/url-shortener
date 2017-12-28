@@ -31,7 +31,7 @@ class TwigTemplateEngine implements ITemplateEngine
 		$this->twig = new \Twig_Environment($this->loader, $options);
 	}
 
-	public function render($templateName, array $data = [])
+	public function render(string $templateName, array $data = []): string
 	{
 		return $this->twig->render($templateName, $data);
 	}

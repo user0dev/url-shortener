@@ -10,28 +10,31 @@
 </head>
 <body>
 
+	<div class="container">
+		<h2 class="head">Сокращение cсылок</h2>
 
-{% block content %}
-	<form id="inputForm" class="main-block" action="" method="post" onsubmit="getShortUrl(); return false">
-		<div class="inputs">
+		<form id="inputForm" class="main-block" action="" method="post" onsubmit="getShortUrl(); return false">
+			<div class="inputs">
 			<span class="border-input long-url">
                 <input class="element" type="text" name="long-url" id="longUrl" value="{{ longUrl }}" required
                         {% block inpuUrl %}
                         {% endblock %}
-                >
+				>
             </span>
-            {% block submitBT %}
-            {% endblock %}
-		</div>
+                {% block submitBT %}
+                {% endblock %}
+			</div>
 
-		<div id="shortUrlBlock">
-			<input type="text" id="shortUrl" readonly value="{{ shortUrl }}">
-		</div>
+			<div id="shortUrlBlock">
+				<input type="text" id="shortUrl" readonly value="{{ shortUrl }}">
+			</div>
 
-	</form>
+		</form>
+	</div>
 
 
-{% endblock %}
+
+
 {% block scripts %}
 	<script src="/js/ajax.js"></script>
 {% endblock %}
